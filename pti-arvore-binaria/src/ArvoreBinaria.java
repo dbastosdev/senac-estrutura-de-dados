@@ -1,39 +1,11 @@
-/*
-
-Neste código, se a árvore for vazia, ou seja, a raiz for nula, o novo
-elemento é inserido diretamente na raiz. Caso contrário, o método cria
-uma variável atual (inicializada com a raiz da árvore), que será utilizada
-para percorrer os caminhos da árvore até encontrar a posição correta
-para o novo elemento. A garantia da ordenação da árvore é obtida com a
-comparação entre o identificador do novo elemento e o identificador do
-nó atual, tentando realizar a inserção à esquerda ou à direita, conforme
-o resultado da comparação. Se o filho do nó atual for nulo, então o novo
-nó é inserido e o método é terminado; caso contrário, uma nova iteração
-começa com o nó atual percorrendo a árvore.
-
-*/
-
-package entities;
-
 public class ArvoreBinaria {
 	
-	// Implementação da classe árvore binária, com construtor e o método insere()
-	
-	// ATRIBUTOS
-	
-	// A árvore binária contém apenas o atributo nó raiz. Os demais nós são armazenados em memória e referenciados a partir do nó raiz. 
 	private No raiz;
 	
-	// CONSTRUTOR
-	
-	// Quando a árvore for instanciada sem nenhum elemento, significa que o nó raíz é nulo. Portanto, inicia com a árvore com valor nulo.
 	public ArvoreBinaria() {
 		this.raiz = null;
 	}
 	
-	// MÉTODOS
-	
-	// Método para inserir um elemento na árvore. Recebe um id, para indicar o código do nó e um elemento que será armazenado no nó. 
 	public void insere(long id, Object elemento) {
 		
 		// Instancia um novo nó. com os elementos filhos nulos.
@@ -81,5 +53,83 @@ public class ArvoreBinaria {
 		}
 		
 	}
+	
+	// Letra A da PTI de Esquerda Feliz:
+	
+	int contador;
+	
+	private int preFixado(No atual){
+		
+		if( atual != null) {
+			if(atual.getEsq() != null) {
+				System.out.println("Id: " + atual.getEsq().getId() + " Elemento: " + atual.getEsq().getElemento());
+				contador++;
+			}
+			preFixado(atual.getEsq());
+			preFixado(atual.getDir());
+		}
+		
+		return contador;
+	}
+	
+	public void esquerdaFestiva() {
+		preFixado(raiz);
+		System.out.println("\nA quantidade da esquerda feliz é: " + contador);
+		System.out.println();
+	}
+	
+	// Letra B - Impressão com recuo:
+	
+	// Calcula altura
+	private long calcAltura(No atual, long a) {
+		if(atual != null) {
+			long e, d; 
+			e = calcAltura(atual.getEsq(), a) + 1; 
+			d = calcAltura(atual.getDir(), a) + 1; 
+			
+			if(e > d) {
+				return a + e;
+			} else {
+				return a + d;
+			}
+		}
+		
+		return a;
+	}
+	
+	private String multiplicaRecuo(long nivel) {
+		String r = "";
+		for(int i = 1; i <= nivel; i++) {
+			r += "\t";
+		}
+		return r;
+	}
+
+	// Letra B - código com recuo
+	
+	public void espacos(long depth) {
+		for(int i=0; i <depth; i++) {
+			System.out.print("   ");
+	    }
+	}
+	
+	public void desenha(No atual, long l) {
+		
+		espacos(l);
+		
+		if(atual == null) {
+			System.out.println("--");
+			return;
+		}
+		
+		System.out.println(atual.getId());
+		desenha(atual.getEsq(), l + 1);
+		desenha(atual.getDir(), l + 1);
+	}
+	
+	public void imprimeArvore() {
+		desenha(raiz, 0);
+	}
+	
 
 }

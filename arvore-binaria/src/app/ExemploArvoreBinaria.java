@@ -21,6 +21,8 @@ public class ExemploArvoreBinaria {
 		a.insere(6, 'G');
 		a.insere(8, 'H');
 		
+		a.imprimeElementosArvore();
+		System.out.println("Altura da árvore: " + a.alturaArvore());
 
 	}
 
